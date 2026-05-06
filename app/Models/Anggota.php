@@ -15,6 +15,7 @@ class Anggota extends Authenticatable
     protected $fillable = [
         'nis', 'nip', 'nama', 'email', 'password',
         'role', 'kelas', 'jurusan', 'foto', 'aktif',
+        'kelas_id', 'program_keahlian_id',
     ];
 
     protected $hidden = ['password', 'remember_token'];
@@ -51,5 +52,10 @@ class Anggota extends Authenticatable
     public function kelas()
     {
         return $this->belongsTo(Kelas::class);
+    }
+
+    public function programKeahlian()
+    {
+        return $this->belongsTo(ProgramKeahlian::class);
     }
 }

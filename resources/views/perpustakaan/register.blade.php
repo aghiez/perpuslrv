@@ -52,25 +52,33 @@
             </label>
 
             <label>Kelas
-                <select name="kelas" style="margin-top:8px;">
-                    @foreach($kelasList as $kelas)
-                        <option value="{{ $kelas->id }}" {{ old('kelas') == $kelas->id ? 'selected' : '' }}>
-                            {{ $kelas->nama }}
+                <!-- <select name="kelas" style="margin-top:8px;">
+                    @foreach($kelas as $kls)
+                        <option value="{{ $kls->id }}" {{ old('kelas') == $kls->id ? 'selected' : '' }}>
+                            {{ $kls->nama }}
                         </option>
                     @endforeach
+                    </select> -->
+                    <select name="kelas_id" id="kelas" style="margin-top:8px;">
+                        <option value="">-- Pilih Kelas --</option>
+                    @foreach($kelas as $kls)
+                        <option value="{{ $kls->id }}" 
+                        data-program="{{ $kls->program_keahlian_id }}">
+                            {{ $kls->nama }}
+                        </option>
+                    @endforeach
+                    </select>
             </label>
 
             <label>Program Keahlian
-                <input type="text" name="jurusan"
-                       value="{{ old('jurusan') }}"
-                       placeholder="Contoh: Rekayasa Perangkat Lunak" />
-                <select name="proggram_keahlian_id" style="margin-top:8px;">
+                <select name="program_keahlian_id" id="programKeahlian" style="margin-top:8px;">
                     <option value="">-- Pilih Program Keahlian --</option>
                     @foreach($programKeahlianList as $program)
-                        <option value="{{ $program->id }}" {{ old('program_keahlian_id') == $program->id ? 'selected' : '' }}>
+                        <option value="{{ $program->id }}"> 
                             {{ $program->nama }}
                         </option>
                     @endforeach
+                    </select>
             </label>
 
             <label>Password
@@ -98,3 +106,15 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.querySelector('#kelas').addEventListener('change', function() {
+        let selected = this.options[this.selectedIndex];
+        let program = selected.getAttribute('data-program');
+
+        document.querySelector('#programKeahlian').value = program ?? '';
+    });
+    const kelasSelect = document.getElementById('kelas');
+    </script>
+@endpush

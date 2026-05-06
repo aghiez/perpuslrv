@@ -23,8 +23,8 @@
 
         @php
         $adminNav = [
-            ['route'=> 'home',                 'label' => 'Lihat Website', 'icon' => '⌂'],
-            ['route' => 'admin.dashboard',         'label' => 'Dashboard',    'icon' => '◈'],
+            ['route' => 'admin.dashboard',          'label' => 'Dashboard',    'icon' => '◈'],
+            ['route'=> 'home',                      'label' => 'Lihat Website', 'icon' => '⌂'],
             ['route' => 'admin.buku.index',         'label' => 'Kelola Buku',  'icon' => '◫'],
             ['route' => 'admin.peminjaman.index',   'label' => 'Peminjaman',   'icon' => '⇄'],
             ['route' => 'admin.program-keahlian.index', 'label' => 'Program Keahlian', 'icon' => '🎓'],

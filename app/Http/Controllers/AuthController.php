@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Models\Kelas;
+use App\Models\ProgramKeahlian;
 
 class AuthController extends Controller
 {
@@ -50,7 +52,9 @@ class AuthController extends Controller
     // GET /daftar
     public function showRegister()
     {
-        return view('perpustakaan.register');
+        $kelas = Kelas::orderBy('nama')->get();
+        $programKeahlianList = ProgramKeahlian::orderBy('nama')->get();
+        return view('perpustakaan.register', compact('kelas', 'programKeahlianList'));
     }
 
     // POST /daftar
@@ -61,17 +65,23 @@ class AuthController extends Controller
             'nis'      => 'required|string|unique:anggota,nis',
             'email'    => 'required|email|unique:anggota,email',
             'password' => 'required|string|min:8|confirmed',
-            'kelas'    => 'nullable|string',
-            'jurusan'  => 'nullable|string',
+            'kelas'    => 'nullable|exists:kelas,nama',
+            'jurusan'  => 'nullable|string|max:100',
+            'kelas_id' => 'required|exists:kelas,id',
+            'program_keahlian_id' => 'nullable|exists:program_keahlians,id',
         ]);
+
+        $kelas = Kelas::find($request->kelas_id);
 
         $anggota = Anggota::create([
             'nama'     => $request->nama,
             'nis'      => $request->nis,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'kelas'    => $request->kelas,
-            'jurusan'  => $request->jurusan,
+            'kelas'    => $kelas->nama ?? null,
+            'jurusan'  => $kelas->programKeahlian->nama ?? null,
+            'kelas_id' => $request->kelas_id,
+            'program_keahlian_id' => $request->program_keahlian_id,
             'role'     => 'siswa',
         ]);
 
